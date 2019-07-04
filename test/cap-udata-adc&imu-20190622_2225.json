@@ -1,0 +1,19 @@
+{
+  "frame_size"     : 26,
+  "header_size"    : 1,
+  "header_hex"     : "FE",
+  "counter_size"   : 1,
+  "counter_offset" : 1,
+  "payload_size"   : 24,
+  "payload_offset" : 2,
+  "content" :
+  [
+    {"title":"vref_raw", "offset": 8, "s_fmt":"h", "p_fmt":"%d",   "hidden":1},
+    {"title":"vsup",     "offset": 0, "s_fmt":"h", "p_fmt":"%.2f", "lambda":"lambda x:11.0*1.205*x[0]/x[1]", "lambda_ref":[0]},
+    {"title":"vsensor",  "offset": 6, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:1.205/0.15*x[0]/x[1]", "lambda_ref":[0]},
+    {"title":"ax",       "offset":10, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:x*8.0/32768"},
+    {"title":"az",       "offset":14, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:x*8.0/32768"},
+    {"title":"gy",       "offset":20, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:x*2000.0/32768"},
+    {"title":"temp",     "offset":16, "s_fmt":"h", "p_fmt":"%.2f", "lambda":"lambda x:36.53+x/340.0"}
+  ]
+}

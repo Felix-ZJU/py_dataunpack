@@ -15,7 +15,6 @@ def export_data(fp, p, j):
     ch = j["content"][k]
     if (not "derived" in ch.keys()) or (not ch["derived"]):
       s_fmt = ch["s_fmt"]
-      p_fmt = ch["p_fmt"]
       ofs   = ch["offset"]
       raw[k] = struct.unpack_from(s_fmt, p, ofs)[0]
     
@@ -35,6 +34,7 @@ def export_data(fp, p, j):
   for k in range(len(j["content"])):
     ch = j["content"][k]
     if (not "hidden" in ch.keys()) or (not ch["hidden"]):
+      p_fmt = ch["p_fmt"]
       str = p_fmt % val[k]
       fp.write(str + ", ")
   fp.write("\n")
@@ -143,16 +143,19 @@ def usage(script):
 # end usage()
 
 def main(argv):
-  retval = 1
+  retval = 0
   if len(argv)>=2 and os.path.isfile(argv[1]):
-    if len(argv)>=3:
+    if len(argv)>=3 and os.path.isfile(argv[2]):
       json_file = argv[2]
-    else:
+    elif os.path.isfile(os.path.splitext(argv[1])[0] + ".json"):
       json_file = os.path.splitext(argv[1])[0] + ".json"
-    if not os.path.isfile(json_file):
+    elif os.path.isfile(os.path.split(argv[1])[0] + "defconfig.json"):
+      json_file = os.path.split(argv[1])[0] + "defconfig.json"
+    else:
       print("cannot find json file (%s)" % json_file)
       retval = 2
-    else:
+
+    if retval == 0:
       try:
         fp = open(json_file)
         j = json.load(fp)
@@ -165,6 +168,7 @@ def main(argv):
         cnt = decode_data(argv[1], j)
         print("\nDecode finished. %d records exported." % cnt)
         retval = 0
+
   if retval:
     usage(argv[0])
   return retval

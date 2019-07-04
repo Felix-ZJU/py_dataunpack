@@ -1,0 +1,19 @@
+{
+  "frame_size"     : 30,
+  "header_size"    : 1,
+  "header_hex"     : "FE",
+  "counter_size"   : 1,
+  "counter_offset" : 1,
+  "payload_size"   : 26,
+  "payload_offset" : 2,
+  "content" :
+  [
+    {"title":"servo",  "offset": 0, "s_fmt":"h", "p_fmt":"%.3f", "lambda":"lambda x:60.0*x/2000"},
+    {"title":"vref",   "offset":10, "s_fmt":"h", "p_fmt":"%d",   "hidden":1},
+    {"title":"ax",     "offset":12, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:8.0*x/32768"},
+    {"title":"ay",     "offset":14, "s_fmt":"h", "p_fmt":"%.4f", "lambda":"lambda x:8.0*x/32768"},
+    {"title":"gz",     "offset":24, "s_fmt":"h", "p_fmt":"%.5f", "lambda":"lambda x:2000.0*x/32768"},
+    {"title":"temp",   "offset":18, "s_fmt":"h", "p_fmt":"%.2f", "lambda":"lambda x:36.53+x/340.0"},
+    {"title":"aa",     "derived":1, "lambda":"lambda x:180/math.pi*math.atan2(x[1], x[2])", "lambda_ref":[3,2]}
+  ]
+}
