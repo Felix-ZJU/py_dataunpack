@@ -1,0 +1,55 @@
+
+#include <stdint.h>
+
+typedef struct _mpu6000_accel_t
+{
+  uint16_t ax;
+  uint16_t ay;
+  uint16_t az;
+} mpu6000_accel_t;
+
+typedef uint16_t mpu6000_temp_t;
+
+typedef struct _mpu6000_gyro_t
+{
+  uint16_t gx;
+  uint16_t gy;
+  uint16_t gz;
+} mpu6000_gyro_t;
+
+typedef struct
+{
+  mpu6000_accel_t acce;
+  mpu6000_temp_t  temp;
+  mpu6000_gyro_t  gyro;
+} mpu6000_data_t;
+
+// the last ADC channel is the internal reference Vref
+#define UART_DATA_ADC_NUM 5
+
+#define SERVO_EXCI_FULLSCALE 2000
+#define SERVO_EXCI_PERIOD_TAB_SZ 8
+const uint16_t servo_period_ms[SERVO_EXCI_PERIOD_TAB_SZ] = 
+{
+  200, 270, 360, 500, 680, 920, 1200, 1600
+};
+const uint16_t servo_exci_num[SERVO_EXCI_PERIOD_TAB_SZ] = 
+{
+  5, 5, 5, 5, 5, 3, 2, 2
+};
+
+/*
+uart_data_buf.checksum = 0;
+for(k=0; k<sizeof(uart_data_t)/2-1; k++)
+  uart_data_buf.checksum += ((uint16_t*)&uart_data_buf)[k];
+*/
+
+typedef struct
+{
+  uint8_t        hdr; // 0xFE
+  uint8_t        cnt; // up-counter
+  int16_t        servo;
+  int16_t        adc[UART_DATA_ADC_NUM];
+  mpu6000_data_t imu;
+  uint16_t       checksum;
+} uart_data_t;

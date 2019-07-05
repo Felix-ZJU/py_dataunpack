@@ -149,8 +149,8 @@ def main(argv):
       json_file = argv[2]
     elif os.path.isfile(os.path.splitext(argv[1])[0] + ".json"):
       json_file = os.path.splitext(argv[1])[0] + ".json"
-    elif os.path.isfile(os.path.split(argv[1])[0] + "defconfig.json"):
-      json_file = os.path.split(argv[1])[0] + "defconfig.json"
+    elif os.path.isfile(os.path.split(argv[1])[0] + "/defconfig.json"):
+      json_file = os.path.split(argv[1])[0] + "/defconfig.json"
     else:
       print("cannot find json file (%s)" % json_file)
       retval = 2
